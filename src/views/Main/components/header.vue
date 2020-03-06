@@ -3,9 +3,9 @@
   <div id="header">
     <el-row>
       <el-col :span="5" class="pull-left">
-        <router-link :to="{name:'index'}">
-          <img src="../../../assets/images/nav.png" />
-        </router-link>
+        
+          <img  @click="changeFlag" src="../../../assets/images/nav.png" />
+       
         <h1>江大二手市场</h1>
       </el-col>
       <el-col :span="10">
@@ -49,6 +49,9 @@ export default {
   methods: {
     onSearch: () => {
 
+    },
+    changeFlag(){
+      this.$store.commit("SETPFlag", true);
     }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
@@ -69,7 +72,10 @@ export default {
 #header {
   background-color: #fff;
   width: 1190px;
+  position: fixed;
+  top: 0px;
   padding: 20px;
+  z-index: 10;
   margin: 0 auto;
   margin-bottom: 30px;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
@@ -84,6 +90,7 @@ export default {
     width: 60px;
     height: 65px;
     vertical-align: middle;
+    cursor: pointer;
   }
 
   .el-form {

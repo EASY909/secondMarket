@@ -1,14 +1,19 @@
 <!--  -->
 <template>
-  <div id="nav">
-    <ul>
-      <li v-for="(items,index) in catelog" :key="index">
-        <svg-icon :iconClass="'one'+index" class="one" />
-        <span>{{items.name}}</span>
-      </li>
-      <p>关于我们|联系我们</p>
-      <p>©2020 江苏大学校园二手市场</p>
-    </ul>
+  <div id="content">
+    <div id="nav">
+      <ul>
+        <li v-for="(items,index) in catelog" :key="index" @click="GetGoodsById(items.id)">
+          <svg-icon :iconClass="'one'+index" class="one" />
+          <span>{{items.name}}</span>
+        </li>
+        <p>关于我们|联系我们</p>
+        <p>©2020 江苏大学校园二手市场</p>
+      </ul>
+    </div>
+
+    <GoodsList v-if="paniationFlag" />
+    <Paniation :cateId="cateId" v-else />
   </div>
 </template>
 
@@ -16,18 +21,26 @@
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
 import { getCateLog } from "@/api/index.js";
+import GoodsList from "./goodslist";
+import Paniation from "./goodspaniation";
 export default {
   //import引入的组件需要注入到对象中才能使用
-  components: {},
+  components: { GoodsList, Paniation },
   data() {
     //这里存放数据
     return {
       catelog: [],
-      iconClass: ""
+      iconClass: "",
+      // paniationFlag: true,
+      cateId: -1
     };
   },
   //监听属性 类似于data概念
-  computed: {},
+  computed: {
+    paniationFlag() {
+      return this.$store.state.pFlag;
+    }
+  },
   //监控data中的数据变化
   watch: {},
   //方法集合
@@ -40,6 +53,13 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    GetGoodsById: function(id) {
+     
+      this.cateId = id;
+      // this.paniationFlag=this.$store.state.pFlag
+      this.$store.commit("SETPFlag", false);
+   
     }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
@@ -47,6 +67,10 @@ export default {
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
     this.GetCateLog();
+    // console.log(this.$store.state.count)
+    // console.log(this.$store.getters.count)
+    // this.$store.commit("SETCOUNT",100)
+    //  this.$store.dispatch('SETACTION',{name:"qc"})
   },
   beforeCreate() {}, //生命周期 - 创建之前
   beforeMount() {}, //生命周期 - 挂载之前
@@ -61,6 +85,9 @@ export default {
 //@import url(); 引入公共css类
 #nav {
   width: 200px;
+  position: fixed;
+  top: 130px;
+  display: inline-block;
   background-color: #fff;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
   li {

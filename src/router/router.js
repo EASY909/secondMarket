@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Main from "@/views/Main/index.vue";
-
+import navGoods from "@/views/Main/components/content.vue";
+import goodsInfo from "@/views/Main/components/goodsInfo.vue";
 Vue.use(Router);
 
 export default new Router({
@@ -13,10 +13,29 @@ export default new Router({
         {
             path: "/index",
             name: "index",
-            meta:{
-                name:"首页"
+            redirect: "/index/content",
+            meta: {
+                name: "首页"
             },
-            component: Main
+            component: () => import("@/views/Main/index.vue"),
+            children: [
+                {
+                    path: "content",
+                    name: "content",
+                    meta: {
+                        name: '内容'
+                    },
+                    component: navGoods
+                },
+                {
+                    path: "/index/goodsinfo",
+                    name: "goodsinfo",
+                    meta: {
+                        name: '商品信息'
+                    },
+                    component: goodsInfo
+                }
+            ]
         }
     ]
 });

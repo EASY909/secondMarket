@@ -1,8 +1,7 @@
 <!--  -->
 <template>
-  <div id="main">
-    <router-view />
-    <!-- <router-view name="goodsInfo" /> -->
+  <div>
+    <h1>主要内ddddddddddddddd容</h1>
   </div>
 </template>
 
@@ -11,8 +10,9 @@
 //例如：import 《组件名称》 from '《组件路径》';
 
 export default {
-  name: "mainIndex",
   //import引入的组件需要注入到对象中才能使用
+  name: "goodInfo",
+
   components: {},
   data() {
     //这里存放数据
@@ -27,7 +27,9 @@ export default {
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {},
   //生命周期 - 挂载完成（可以访问DOM元素）
-  mounted() {},
+  mounted() {
+ 
+  },
   beforeCreate() {}, //生命周期 - 创建之前
   beforeMount() {}, //生命周期 - 挂载之前
   beforeUpdate() {}, //生命周期 - 更新之前
@@ -39,10 +41,4 @@ export default {
 </script>
 <style lang='scss' scoped>
 //@import url(); 引入公共css类
-#main{
-  width: 100%;
-  height: auto;
-  overflow: hidden;
-  padding-top: 130px;
-}
 </style>

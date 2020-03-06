@@ -2,19 +2,19 @@
 <template>
   <div id="index">
     <Header></Header>
-    <Nav></Nav>
+    <!-- <Nav></Nav> -->
     <Main></Main>
   </div>
 </template>
 
 <script>
 import Header from "./components/header";
-import Nav from "./components/nav";
+
 import Main from "./components/main";
 export default {
   name: "index",
   components: {
-      Header,Nav,Main
+      Header,Main
   }
 };
 </script>
