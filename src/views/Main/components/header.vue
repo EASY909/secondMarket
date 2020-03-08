@@ -73,8 +73,8 @@ export default {
       this.login = true;
     },
     doRegist() {
-      // console.log(this.regist)
       this.regist = true;
+
     },
  
     goRegist(val) {

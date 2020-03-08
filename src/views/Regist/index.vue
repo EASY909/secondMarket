@@ -11,20 +11,20 @@
       center
       width="30%"
     >
-      <el-form :model="form">
-        <el-form-item label="昵称" :label-width="formLabelWidth">
+      <el-form ref="form" :model="form">
+        <el-form-item label="昵称" prop="name" :label-width="formLabelWidth">
           <el-input v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="手机" :label-width="formLabelWidth">
+        <el-form-item label="手机" prop="phone" :label-width="formLabelWidth">
           <el-input v-model="form.phone" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="密码" :label-width="formLabelWidth">
+        <el-form-item label="密码" prop="password" :label-width="formLabelWidth">
           <el-input show-password v-model="form.password" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
 
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary">点击注册</el-button>
+        <el-button @click="DoRegist" type="primary">点击注册</el-button>
         <p>
           已有账号？去
           <span class="login" @click="goLogin">登录</span>吧！
@@ -37,7 +37,7 @@
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
-
+import { doRegist } from "@/api/login.js";
 export default {
   //import引入的组件需要注入到对象中才能使用
   name: "registindex",
@@ -86,6 +86,27 @@ export default {
       this.dialogFormVisible = false;
       this.$emit("update:registFlag", false);
       this.$emit("goLogin", true);
+    },
+    DoRegist() {
+      let requestData = {
+        username: this.form.name,
+        phone: this.form.phone,
+        password: this.form.password
+      };
+      doRegist(requestData)
+        .then(response => {
+          //console.log(response);
+          this.$message({
+            message: "注册成功！",
+            type: "success"
+          });
+          this.goLogin();
+        })
+        .catch(error => {
+          this.$message.error("用户名重复！");
+          console.log(this.$refs);
+          this.$refs['form'].resetFields();
+        });
     }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
