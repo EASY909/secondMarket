@@ -2,13 +2,12 @@
 <template>
   <div id="header">
     <el-row>
-      <el-col :span="5" class="pull-left">
-        
-          <img  @click="changeFlag" src="../../../assets/images/nav.png" />
-       
+      <el-col :span="6" class="pull-left">
+        <img @click="changeFlag" src="../../../assets/images/nav.png" />
+
         <h1>江大二手市场</h1>
       </el-col>
-      <el-col :span="10">
+      <el-col :span="13">
         <el-form :inline="true" class="demo-form-inline">
           <el-form-item>
             <el-input style="width:250px;" v-model="search" placeholder="请输入内容"></el-input>
@@ -21,24 +20,33 @@
       <el-col :span="5" class="pull-right">
         <div class="login">
           <el-button type="danger">我要发布</el-button>
-          <span>登录</span>
-          <span>注册</span>
+          <span @click="doLogin">登录</span>
+          <span @click="doRegist">注册</span>
         </div>
       </el-col>
-      
+      <Regist @goLogin="goLogin" :registFlag.sync="regist" />
+      <!-- <Regist @close="close" :registFlag="regist" /> -->
+      <Login @goRegist="goRegist" :loginFlag.sync="login" />
     </el-row>
   </div>
 </template>
 
 <script>
-
+import Login from "../../Login/index";
+import Regist from "../../Regist/index";
 export default {
   //import引入的组件需要注入到对象中才能使用
-  components: {},
+  name: "headerIndex",
+  components: {
+    Login,
+    Regist
+  },
   data() {
     //这里存放数据
     return {
-      search: "111"
+      search: "",
+      regist: false,
+      login: false
     };
   },
   //监听属性 类似于data概念
@@ -47,11 +55,33 @@ export default {
   watch: {},
   //方法集合
   methods: {
-    onSearch: () => {
-
+    onSearch() {
+      this.$router.push({
+        path: `/index/searchlist/${this.search}`
+      });
     },
-    changeFlag(){
-      this.$store.commit("SETPFlag", true);
+    changeFlag() {
+      this.$store.commit("panition/SETPFlag", true);
+      if (this.$route.path == "/index/content") {
+        return;
+      }
+      this.$router.push({
+        path: "/"
+      });
+    },
+    doLogin() {
+      this.login = true;
+    },
+    doRegist() {
+      // console.log(this.regist)
+      this.regist = true;
+    },
+ 
+    goRegist(val) {
+      this.regist = true;
+    },
+    goLogin(val) {
+      this.login = true;
     }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
@@ -73,6 +103,7 @@ export default {
   background-color: #fff;
   width: 1190px;
   position: fixed;
+  box-sizing: border-box;
   top: 0px;
   padding: 20px;
   z-index: 10;

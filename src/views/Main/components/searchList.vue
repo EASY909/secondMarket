@@ -1,11 +1,10 @@
 <!--  -->
 <template>
-  <div id="paniation">
+  <div id="searchList">
     <div class="menu">
-      <h1>{{cateInfo.title || title}}</h1>
       <div class="box">
         <div
-          @click="goGoodDetail({goodsId:goodses.id,title:title})"
+          @click="goGoodDetail({goodsId:goodses.id,title:goodses.name})"
           class="card"
           v-for="(goodses,index) in goodinfo"
           :key="index"
@@ -13,7 +12,7 @@
           <img :src="BASEURL+goodses.imgUrl" />
           <span class="price">{{goodses.price}}</span>
           <p>{{goodses.name}}</p>
-          <span class="date">{{goodses.polishTime}}</span>
+          <span class="date">{{goodses.startTime}}</span>
           <span class="mark">江大市场</span>
         </div>
       </div>
@@ -32,62 +31,45 @@
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
-import { getGoodsById } from "@/api/index";
+import { searchGoods } from "@/api/index";
 export default {
+  name: "searcList",
   //import引入的组件需要注入到对象中才能使用
-  name: "goodsPanition",
-  props: {
-    cateInfo: {
-      type: Object,
-      default: {}
-    }
-  },
+
   data() {
     //这里存放数据
     return {
       count: 0,
       limit: 2,
-      current_page: this.$store.state.panition.currentPage,
+      current_page: this.$store.state.search.currentPage,
       goodinfo: [],
       BASEURL: this.BaseUrl.BaseUrl
     };
   },
   //监听属性 类似于data概念
-  computed: {
-    title() {
-      return this.$store.state.panition.title;
-    },
-    goodsId() {
-      return this.$store.state.panition.cateId;
-    }
-  },
+  computed: {},
   //监控data中的数据变化
-  watch: {
-    cateInfo: function(newV, old) {
-      this.GetGoodsById();
-    }
-  },
+  watch: {},
   //方法集合
   methods: {
-    GetGoodsById() {
-      let data = {
-        cateId: this.$props.cateInfo.cateid || this.$store.state.panition.cateId,
+    loadSearch() {
+      let reData = {
+        goodsInfo: this.$route.params.goodsInfo,
         limit: this.limit,
         page: this.current_page
       };
-      getGoodsById(data)
+
+      searchGoods(reData)
         .then(response => {
-          this.count = response.count;
           this.goodinfo = response.data;
+          console.log();
         })
-        .catch(error => {
-          console.log(error);
-        });
+        .catch(error => {});
     },
     handleCurrentChange(val) {
       // this.GetGoodsById();
 
-      this.$store.commit("panition/SETPAGE", val);
+      this.$store.commit("search/SETPAGE", val);
       this.current_page = val;
       this.GetGoodsById();
     },
@@ -96,11 +78,11 @@ export default {
     }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
-  created() {},
-  //生命周期 - 挂载完成（可以访问DOM元素）
-  mounted() {
-    this.GetGoodsById();
+  created() {
+    this.loadSearch();
   },
+  //生命周期 - 挂载完成（可以访问DOM元素）
+  mounted() {},
   beforeCreate() {}, //生命周期 - 创建之前
   beforeMount() {}, //生命周期 - 挂载之前
   beforeUpdate() {}, //生命周期 - 更新之前
@@ -112,10 +94,13 @@ export default {
 </script>
 <style lang='scss' scoped>
 //@import url(); 引入公共css类
-#paniation {
-  padding-left: 30px;
-  float: right;
+#searchList {
   @include webkit(box-sizing, border-box);
-  width: 83%;
+  .menu{
+    .card{
+      width: 25%;
+     
+    }
+  }
 }
 </style>

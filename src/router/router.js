@@ -2,6 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 import navGoods from "@/views/Main/components/content.vue";
 import goodsInfo from "@/views/Main/components/goodsInfo.vue";
+import searchlist from "@/views/Main/components/searchList.vue";
 Vue.use(Router);
 
 export default new Router({
@@ -28,12 +29,20 @@ export default new Router({
                     component: navGoods
                 },
                 {
-                    path: "/index/goodsinfo",
+                    path: "/index/goodsinfo/:goodsid/:title",
                     name: "goodsinfo",
                     meta: {
                         name: '商品信息'
                     },
                     component: goodsInfo
+                },
+                {
+                    path: "/index/searchlist/:goodsInfo",
+                    name: "searchlist",
+                    meta: {
+                        name: '搜索页'
+                    },
+                    component: searchlist
                 }
             ]
         }

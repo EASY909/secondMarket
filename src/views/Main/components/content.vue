@@ -3,7 +3,11 @@
   <div id="content">
     <div id="nav">
       <ul>
-        <li v-for="(items,index) in catelog" :key="index" @click="GetGoodsById(items.id)">
+        <li
+          v-for="(items,index) in catelog"
+          :key="index"
+          @click="GetGoodsById({title:items.name,cateid:items.id})"
+        >
           <svg-icon :iconClass="'one'+index" class="one" />
           <span>{{items.name}}</span>
         </li>
@@ -13,7 +17,7 @@
     </div>
 
     <GoodsList v-if="paniationFlag" />
-    <Paniation :cateId="cateId" v-else />
+    <Paniation :cateInfo="cateInfo" v-else />
   </div>
 </template>
 
@@ -32,13 +36,13 @@ export default {
       catelog: [],
       iconClass: "",
       // paniationFlag: true,
-      cateId: -1
+      cateInfo: {}
     };
   },
   //监听属性 类似于data概念
   computed: {
     paniationFlag() {
-      return this.$store.state.pFlag;
+      return this.$store.state.panition.pFlag;
     }
   },
   //监控data中的数据变化
@@ -54,19 +58,21 @@ export default {
           console.log(error);
         });
     },
-    GetGoodsById: function(id) {
-     
-      this.cateId = id;
+    GetGoodsById: function(params) {
+      this.cateInfo = params;
+      this.$store.commit("panition/SETTITLE", params.title);
+      this.$store.commit("panition/SETPCATEID", params.cateid);
       // this.paniationFlag=this.$store.state.pFlag
-      this.$store.commit("SETPFlag", false);
-   
+      this.$store.commit("panition/SETPFlag", false);
     }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
-  created() {},
+  created() {
+     this.GetCateLog();
+  },
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
-    this.GetCateLog();
+   
     // console.log(this.$store.state.count)
     // console.log(this.$store.getters.count)
     // this.$store.commit("SETCOUNT",100)

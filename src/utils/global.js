@@ -1,9 +1,17 @@
 
 export default {
     install(Vue, options) {
-        Vue.prototype.getComAndInfos = function (params) {
-            console.log(params)
-           this.$router.push({ name: "goodsinfo" });
+        Vue.prototype.goComAndInfos = function (params) {
+            this.$router.push({
+
+                path: `/index/goodsinfo/${params.goodsId}/${params.title}`
+                // name: "goodsinfo",
+                // query: {
+                //     goodsid: params, 
+                // }
+            });
+
+
         }
     }
 }
