@@ -65,6 +65,7 @@ module.exports = {
         hotOnly: false,
         proxy: {
             '/devApi': {
+                // target: 'http://localhost:80/SecondhandCampus',
                 target: 'http://106.12.191.36/SecondhandCampus',
                 changeOrigin: true,
                 pathRewrite: {

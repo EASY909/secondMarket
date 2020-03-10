@@ -60,3 +60,27 @@ export function searchGoods(data) {
 
     })
 }
+
+/**
+ * 添加关注
+ */
+export function addFocus(data) {
+    return service.request({
+        method: 'post',
+        url: '/focus/addFocus',
+        data
+
+    })
+}
+
+/**
+ * 评论
+ */
+export function doComm(data) {
+    return service.request({
+        method: 'post',
+        url: '/comments/doComm',
+        data
+
+    })
+}

@@ -92,7 +92,9 @@ export default {
         username: this.form.name,
         phone: this.form.phone,
         password: this.form.password
-      };
+      }
+
+      
       doRegist(requestData)
         .then(response => {
           //console.log(response);

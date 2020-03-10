@@ -7,7 +7,7 @@
 
         <h1>江大二手市场</h1>
       </el-col>
-      <el-col :span="13">
+      <el-col :span="11">
         <el-form :inline="true" class="demo-form-inline">
           <el-form-item>
             <el-input style="width:250px;" v-model="search" placeholder="请输入内容"></el-input>
@@ -17,11 +17,18 @@
           </el-form-item>
         </el-form>
       </el-col>
-      <el-col :span="5" class="pull-right">
-        <div class="login">
-          <el-button type="danger">我要发布</el-button>
+      <el-col :span="7" class="pull-right">
+        <el-button type="danger" :disabled="username?false:true">我要发布</el-button>
+
+        <div class="login" v-if="!username">
           <span @click="doLogin">登录</span>
           <span @click="doRegist">注册</span>
+        </div>
+
+        <div class="li" v-else>
+          <span>{{username}}</span>
+          <el-button type="primary" size="mini" @click="goUser" plain>个人中心</el-button>
+          <el-button type="success" @click="outLogin" size="mini" plain>退出登录</el-button>
         </div>
       </el-col>
       <Regist @goLogin="goLogin" :registFlag.sync="regist" />
@@ -46,11 +53,16 @@ export default {
     return {
       search: "",
       regist: false,
-      login: false
+      login: false,
+      showFlag: true
     };
   },
   //监听属性 类似于data概念
-  computed: {},
+  computed: {
+    username() {
+      return this.$store.state.login.username;
+    }
+  },
   //监控data中的数据变化
   watch: {},
   //方法集合
@@ -59,6 +71,7 @@ export default {
       this.$router.push({
         path: `/index/searchlist/${this.search}`
       });
+      this.search="";
     },
     changeFlag() {
       this.$store.commit("panition/SETPFlag", true);
@@ -74,14 +87,21 @@ export default {
     },
     doRegist() {
       this.regist = true;
-
     },
- 
+
     goRegist(val) {
       this.regist = true;
     },
     goLogin(val) {
       this.login = true;
+    },
+    outLogin() {
+      this.$store.dispatch('login/exit')
+    },
+    goUser(){
+      this.$router.push({
+        path:"/user"
+      })
     }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
@@ -116,7 +136,9 @@ export default {
     vertical-align: middle;
     display: inline;
   }
-
+  .pull-right {
+    margin-top: 10px;
+  }
   img {
     width: 60px;
     height: 65px;
@@ -129,11 +151,28 @@ export default {
     margin-left: 140px;
   }
   .login {
-    margin-top: 10px;
+    display: inline-block;
+
     span {
       font-size: 17px;
       cursor: pointer;
       margin-left: 10px;
+    }
+  }
+  .li {
+    display: inline-block;
+    ul {
+      width: auto;
+      height: auto;
+      z-index: 600;
+      position: fixed;
+      top: 65px;
+      right: 195px;
+      box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16),
+        0 2px 10px 0 rgba(0, 0, 0, 0.12);
+      li {
+        height: 50px;
+      }
     }
   }
 }

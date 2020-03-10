@@ -3,6 +3,7 @@ import Router from "vue-router";
 import navGoods from "@/views/Main/components/content.vue";
 import goodsInfo from "@/views/Main/components/goodsInfo.vue";
 import searchlist from "@/views/Main/components/searchList.vue";
+import user from "@/views/User/index.vue";
 Vue.use(Router);
 
 export default new Router({
@@ -45,6 +46,14 @@ export default new Router({
                     component: searchlist
                 }
             ]
-        }
+        },
+        {
+            path: "/user",
+            name:"user",
+            meta:{
+                name:"个人中心"
+            },
+            component: user
+        },
     ]
 });

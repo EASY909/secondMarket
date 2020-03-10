@@ -11,6 +11,7 @@ import animated from 'animate.css'
 import common from './api/common';
 //全局方法
 import global from "./utils/global"
+import "./router/premit"
 
 Vue.prototype.BaseUrl=common;
 Vue.config.productionTip = false;

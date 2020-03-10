@@ -21,7 +21,7 @@
       </el-form>
 
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary">登录</el-button>
+        <el-button type="primary" @click="doLogin">登录</el-button>
         <p>
           没有账号？赶快
           <span class="login" @click="goRegist">注册</span>吧！
@@ -82,6 +82,25 @@ export default {
       this.dialogFormVisible = false;
       this.$emit("update:loginFlag", false);
       this.$emit("goRegist", true);
+    },
+    doLogin() {
+      let reData = {
+        phone: this.form.phone,
+        password: this.form.password
+      };
+      this.$store
+        .dispatch("login/login", reData)
+        .then(resonse => {
+          if (resonse.code == 1) {
+            this.$message({
+              message: "登录成功！",
+              type: "success"
+            });
+            this.close();
+          }
+          
+        })
+        .catch(error => {});
     }
   },
   //生命周期 - 创建完成（可以访问当前this实例）

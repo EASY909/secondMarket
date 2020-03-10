@@ -27,15 +27,27 @@
           <span>卖家信息</span>
           <hr />
         </div>
-        <div class="item-contact">
+        <div class="item-contact" v-if="username?false:true">
           <p class="pnologin">
-            <a class="elogin">登录</a>
-            <span>或</span>
-            <a class="eregist">注册</a>
-            <span>后查看联系信息</span>
+            <span>登录后查看联系信息</span>
           </p>
         </div>
-
+        <div class="item-contact" v-else>
+          <p class="login">
+            <img src="../../../assets/images/user.png" />
+            <span>{{goodsData.userInfo.username}}</span>
+          </p>
+          <p class="login">
+            <img src="../../../assets/images/phone.png" />
+            <span>{{goodsData.userInfo.phone}}</span>
+          </p>
+          <p class="login">
+            <img src="../../../assets/images/QQ.png" />
+            <span>{{goodsData.userInfo.qq || ""}}</span>
+          </p>
+          <button @click="addFocus(goodsData.goods.id)" class="blogin addfocus">加入关注</button>
+          <button class="blogin pay">在线支付</button>
+        </div>
         <h1 class="polishtime">发布于{{goodsData.goods.startTime}}</h1>
       </div>
     </div>
@@ -50,14 +62,31 @@
       <hr class="hr1" />
       <hr class="hr2" />
       <div class="c">
+        <div class="comment">
+          <p>
+            <span>{{goodsData.comments.user}}</span>
+            {{goodsData.comments.content}}
+          </p>
+          <p>{{goodsData.comments.create_at}}</p>
+        </div>
         <!-- <p><span>效力：</span>很不错 </p>
         <p>2018-04-27 10:05:36</p>-->
       </div>
 
       <div class="doComm">
         <img src="../../../assets/images/comment.png" />
-        <textarea id="doComm" placeholder="这里写下评论"></textarea>
-        <button>评论</button>
+        <textarea
+          :disabled="username?false:true"
+          v-model="content"
+          id="doComm"
+          placeholder="这里写下评论"
+        ></textarea>
+        <el-button
+          @click="doComm(goodsData.goods.id)"
+          :disabled="username?false:true"
+          style="margin-left:50px;"
+          type="primary"
+        >评论</el-button>
       </div>
     </div>
   </div>
@@ -66,7 +95,7 @@
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
-import { GetComAndInfos } from "@/api/index";
+import { GetComAndInfos, addFocus, doComm } from "@/api/index";
 export default {
   //import引入的组件需要注入到对象中才能使用
   name: "goodInfo",
@@ -77,11 +106,16 @@ export default {
     return {
       BASEURL: this.BaseUrl.BaseUrl,
       goodsData: null,
-      title:""
+      title: "",
+      content: ""
     };
   },
   //监听属性 类似于data概念
-  computed: {},
+  computed: {
+    username() {
+      return this.$store.state.login.username;
+    }
+  },
   //监控data中的数据变化
   watch: {},
   //方法集合
@@ -90,11 +124,56 @@ export default {
       let resData = {
         goodsId: this.$route.params.goodsid
       };
-      this.title=this.$route.params.title
+      this.title = this.$route.params.title;
       GetComAndInfos(resData)
         .then(response => {
           this.goodsData = response.data;
           console.log(this.goodsData);
+        })
+        .catch(error => {});
+    },
+    addFocus(id) {
+      let reData = {
+        goodsId: id
+      };
+      addFocus(reData)
+        .then(response => {
+          console.log(response);
+          if (response.code != 1) {
+            this.$message({
+              message: response.message,
+              type: "error"
+            });
+          } else if (response.code == 1) {
+            this.$message({
+              message: "关注成功！",
+              type: "success"
+            });
+          }
+        })
+        .catch(error => {});
+    },
+    doComm(id) {
+      let reData = {
+        phone: this.username,
+        goodsId: id,
+        comment: this.content
+      };
+      // console.log(reData)
+      doComm(reData)
+        .then(response => {
+          console.log(response);
+          if (response.code != 1) {
+            this.$message({
+              message: response.message,
+              type: "error"
+            });
+          } else if (response.code == 1) {
+            this.$message({
+              message: "评论成功！",
+              type: "success"
+            });
+          }
         })
         .catch(error => {});
     }
