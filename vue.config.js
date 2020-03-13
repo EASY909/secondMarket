@@ -1,7 +1,7 @@
 const path = require('path');
 module.exports = {
     // 基本路径
-    publicPath: process.env.NODE_ENV === 'production' ? '' : '/',
+    publicPath: process.env.NODE_ENV === 'production' ? '' : '/SecondhandCampus',
     // 输出文件目录
     outputDir: process.env.NODE_ENV === 'production' ? 'dist' : 'devdist',
     // eslint-loader 是否在保存的时候检查
@@ -65,7 +65,7 @@ module.exports = {
         hotOnly: false,
         proxy: {
             '/devApi': {
-                // target: 'http://localhost:80/SecondhandCampus',
+                // target: 'http://localhost:3000/SecondhandCampus',
                 target: 'http://106.12.191.36/SecondhandCampus',
                 changeOrigin: true,
                 pathRewrite: {

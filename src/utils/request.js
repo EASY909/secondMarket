@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Message } from 'element-ui';
-const BASEURL = process.env.NODE_ENV === 'production' ? '' : '/devApi';
+const BASEURL = process.env.NODE_ENV === 'production' ? '/devApi' : '/devApi';
 import Qs from 'qs'
 //拦截器
 

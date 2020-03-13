@@ -7,6 +7,7 @@ import user from "@/views/User/index.vue";
 Vue.use(Router);
 
 export default new Router({
+    base:"SecondhandCampus",
     routes: [
         {
             path: "/",

@@ -28,7 +28,9 @@ methods: {
 },
 //生命周期 - 创建完成（可以访问当前this实例）
 created() {
-getPeoInfos()
+getPeoInfos().then(response=>{
+    console.log(response)
+})
 },
 //生命周期 - 挂载完成（可以访问DOM元素）
 mounted() {
